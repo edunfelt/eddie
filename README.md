@@ -28,3 +28,6 @@ The channel is assumed to be called either `#queue` or `#kö`. The workflow then
 4. Eddie deletes both the students original message and the TA's response.
 
 This requires minimal intervention to keep the queue channel clear and easy to navigate for students and TA's.
+
+## The name
+Yes, it is a hitchhikers reference. :)
