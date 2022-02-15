@@ -33,6 +33,31 @@ async def on_ready():
     print("Eddie is ready!")
 
 @bot.event
+async def on_message(message):
+    channel = message.channel.name
+    author = message.author
+    ref = message.reference
+    
+    bot_perms = discord.utils.find(lambda r: r.name == "bots", author.roles)
+    
+    if channel not in ["queue", "kö"] or not bot_perms or not ref:
+        return
+        
+    await message.add_reaction("✅")
+    
+@bot.event
+async def on_reaction_add(reaction, user):
+    emoji = reaction.emoji
+    bot_perms = discord.utils.find(lambda r: r.name == "bots", user.roles)
+    message = reaction.message
+    
+    if user.bot or emoji != "✅" or not bot_perms:
+        return
+    
+    await message.reference.delete()
+    await message.delete()
+
+@bot.event
 async def on_member_join(member):
     """Sends DM to students joining the server"""
     message = f"""
@@ -63,7 +88,7 @@ async def ping(ctx, help="check if bot is up by ping"):
     await ctx.send("pong")
 
 @bot.command()
-@commands.has_role("admin")
+@commands.has_role("bots")
 async def toggle(ctx, channel="queue", help="toggle queue channel"):
     """Lock/Unlock write-permissions for regular members"""
     server = ctx.guild
@@ -93,7 +118,7 @@ async def toggle(ctx, channel="queue", help="toggle queue channel"):
 async def docs(ctx, search, help="fetch docs"):
     """Fetch Python documentation"""
     docs = pydoc.render_doc(search, renderer=pydoc.plaintext)
-    await ctx.send(f"What's {search}... Great question! Here are the docs:\n```{docs}\n```")
+    await ctx.send(f"What does {search} do... Great question! Here are the docs:\n```{docs}\n```")
     
 # run client using TOKEN from .env file    
 bot.run(TOKEN)
