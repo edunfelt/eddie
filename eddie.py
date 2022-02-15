@@ -29,9 +29,9 @@ def bot_msg(msg):
     """Check if message was sent by bot"""
     return msg.author == bot.user
 
-def bot_perms(msg):
-    """Check if message was sent by user with 'bots' role"""
-    roles = [r.name for r in msg.author.roles]
+def bot_perms(user):
+    """Check if user has 'bots' role"""
+    roles = [r.name for r in user.roles]
     if "bots" in roles:
         return True
     else:
@@ -98,7 +98,7 @@ async def on_message(msg):
     """Listen for TAs calling students in the queue"""
     channel = msg.channel.name
 
-    if channel not in ["queue", "kö"] or not bot_perms(msg) or not msg.reference:
+    if channel not in ["queue", "kö"] or not bot_perms(msg.author) or not msg.reference:
         return
         
     await msg.add_reaction("✅")
@@ -110,7 +110,7 @@ async def on_reaction_add(reaction, user):
     msg = reaction.message
     ref = await msg.channel.fetch_message(msg.reference.message_id)
     
-    if user.bot or reaction.emoji != "✅" or not bot_perms(msg):
+    if user.bot or reaction.emoji != "✅" or not bot_perms(user):
         return
     
     await ref.delete()
@@ -122,13 +122,13 @@ async def on_member_join(member):
     message = f"""
 Hej {member.name},
     
-Welcome to the Discord server for this course! Here you can reach out for \
-help from our TAs and teachers, as well as interact with other students. 
+Welcome to the Discord server for this course! In the server you can reach \
+our for help from our TAs and teachers, as well as interact with other students. 
 
 The server is meant to be a welcoming and friendly place, so please treat \
 everyone with respect and patience. We also encourage you to change your \
 user name in the server (the Server Profile) to your real name. If you \
-need help getting started - don't hesitate to ask us!'
+need help getting started - don't hesitate to ask!
 
 There might be more specific rules for this course's Discord server, so \
 please read what's posted in the #rules channel before proceeding.
@@ -144,13 +144,13 @@ the Teachers and TAs
 async def on_command_error(ctx, error):
     """Basic error messages"""
     if isinstance(error, commands.MissingPermissions):
-        msg = "Sorry, you don't have permissions to do that. Ask a course responsible for help!'"
+        msg = "Sorry, you don't have permissions to do that. Ask a course responsible for help!"
     elif isinstance(error, commands.MissingRequiredArgument):
         msg = f"You forgot an argument: {error.param}. Please try again!"
     elif isinstance(error, commands.CommandNotFound):
         msg = "I don't know that command. Check out the `>help` for more info on what I can do!"
     else:
-        msg = "Oh no! Something went wrong while running the command!"
+        msg = "Something went wrong with the command! Ask a course responsible for help."
 
     await ctx.send(msg, delete_after=5)
     await ctx.message.delete(delay=5)
