@@ -13,4 +13,4 @@ jobs:
         
       - name: Run Python script
         run: |
-          DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} python3 edunfelt/eddie.py
+          DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} python3 eddie.py
