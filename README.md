@@ -1,4 +1,4 @@
-# Eddie the computer Discord bot
+# Discord bot: Eddie the computer
 A discord bot to help manage programming courses. Eddie is hosted on my Heroku account currently on the free plan. 
 This should be enough to keep him running 24/7, but it might be good to look into other options in the future.
 
