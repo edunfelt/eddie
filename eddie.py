@@ -11,12 +11,10 @@ Modified: 2022-02-15
 import os
 import discord
 from discord.ext import commands
-#from dotenv import load_dotenv
 import pydoc
 
 # envs
-#load_dotenv()
-TOKEN = os.environ.get("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 # intents
 intents = discord.Intents.default()
