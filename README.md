@@ -2,9 +2,11 @@
 A discord bot to help manage programming courses. Eddie is hosted on my Heroku account currently on the free plan. 
 This should be enough to keep him running 24/7, but it might be good to look into other options in the future.
 
-Bot prefix is currently set to `>`.
+Bot prefix is currently set to `!` or by directly using @ to mention him.
 
 Note that some commands/features requires the user to have a role called `bots` to work.
+
+Pull requests welcome!
 
 ## Commands and features
 Eddie is currently very limited in functionality, but it can easily be extended for future purposes. 
@@ -14,10 +16,10 @@ When a student joins the Discord channel, Eddie sends a DM with a general greeti
 This message is currently written in a way that does not depend on the particular course.
 
 ### Commands
-- `>ping`: check if bot is up.
-- `>toggle [channel]`: lock/unlock a channel (defaults to `#queue`) for regular members to send messages. 
+- `!ping`: check if bot is up.
+- `!toggle [channel]`: lock/unlock a channel (defaults to `#queue`) for regular members to send messages. 
 Note that this will purge all bot messages upon locking a channel.
-- `>docs <keyword>`: get Python documentation for `keyword`.
+- `!docs <keyword>`: get Python documentation for `keyword`.
 
 ### Queue workflow
 This section assumes the server has a "queue" channel where students post their name to indicate that they need help during lab hours. 
