@@ -6,7 +6,7 @@ Discord bot for managing courses.
 
 Author: Emilia Dunfelt (emilia@dunfelt.se)
 Created: 2022-02-14
-Modified: 2022-02-15
+Modified: 2022-02-20
 """
 import os
 import discord
