@@ -20,6 +20,7 @@ This message is currently written in a way that does not depend on the particula
 - `!toggle [channel]`: lock/unlock a channel (defaults to `#queue`) for regular members to send messages. 
 Note that this will purge all bot messages upon locking a channel.
 - `!docs <keyword>`: get Python documentation for `keyword`.
+- `!help [command]`: view the help
 
 ### Queue workflow
 This section assumes the server has a "queue" channel where students post their name to indicate that they need help during lab hours. 
