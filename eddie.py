@@ -21,7 +21,13 @@ intents = discord.Intents.default()
 intents.members = True
 
 # bot settings
-bot = commands.Bot(command_prefix="!", intents=intents, description="Your friendly shipboard robot, equipped with a GPP (Genuine People Personality) for your convenience.")
+help_command = commands.DefaultHelpCommand(no_category="Available commands")
+bot = commands.Bot(
+    command_prefix=commands.when_mentioned_or("!"), 
+    intents=intents,
+    help_command=help_command,
+    description="Your friendly shipboard robot, equipped with a GPP (Genuine People Personality) for your convenience."
+)
 
 def bot_msg(msg):
     """Check if message was sent by bot"""
@@ -148,7 +154,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingRequiredArgument):
         msg = f"You forgot an argument: `{error.param}`. Please try again!"
     elif isinstance(error, commands.CommandNotFound):
-        msg = "I don't know that command. Check out the `>help` for more info on what I can do!"
+        msg = "I don't know that command. Check out the `!help` for more info on what I can do!"
     else:
         msg = "Something went wrong! Ask a course responsible for help."
 
