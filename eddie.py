@@ -60,10 +60,6 @@ async def toggle(ctx, channel="queue", help="toggle queue channel"):
         await ctx.send(f"Sorry, I could not find a channel named `#{channel}` in here. Did you forget to add it?", delete_after=5)
         await ctx.message.delete(delay=5)
         return
-        
-    # user does not have bots permissions
-    if not bot_perms(ctx.message.author):
-        raise discord.MissingPermissions
 
     # lock/unlock
     if queue.permissions_synced:
@@ -73,6 +69,7 @@ async def toggle(ctx, channel="queue", help="toggle queue channel"):
         queue_msg = "The queue is locked for now, it will be opened again before the next lab session. Happy hacking!"
     else:
         await queue.set_permissions(everyone, overwrite=None)
+        await queue.purge(limit=100, check=bot_msg)
         confirmation = f"I unlocked the channel `#{channel}`!"
         queue_msg = "The queue is now open! Please type your name and wait for a TA to call you to a voice channel."
     
@@ -146,7 +143,7 @@ the Teachers and TAs
 @bot.event
 async def on_command_error(ctx, error):
     """Basic error messages"""
-    if isinstance(error, commands.MissingPermissions):
+    if isinstance(error, commands.MissingRole):
         msg = "Sorry, you don't have permission to do that. Ask a course responsible for help!"
     elif isinstance(error, commands.MissingRequiredArgument):
         msg = f"You forgot an argument: `{error.param}`. Please try again!"
