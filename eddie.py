@@ -21,7 +21,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 # bot settings
-bot = commands.Bot(command_prefix=">", intents=intents, description="Your friendly shipboard robot, equipped with a GPP (Genuine People Personality) for your convenience.")
+bot = commands.Bot(command_prefix="!", intents=intents, description="Your friendly shipboard robot, equipped with a GPP (Genuine People Personality) for your convenience.")
 
 def bot_msg(msg):
     """Check if message was sent by bot"""
@@ -57,8 +57,13 @@ async def toggle(ctx, channel="queue", help="toggle queue channel"):
     
     # channel not found
     if not queue:
-        await ctx.send(f"Sorry, I could not find a channel named `#{channel}` in here. Did you forget to add it?")
+        await ctx.send(f"Sorry, I could not find a channel named `#{channel}` in here. Did you forget to add it?", delete_after=5)
+        await ctx.message.delete(delay=5)
         return
+        
+    # user does not have bots permissions
+    if not bot_perms(ctx.message.author):
+        raise discord.MissingPermissions
 
     # lock/unlock
     if queue.permissions_synced:
@@ -142,13 +147,13 @@ the Teachers and TAs
 async def on_command_error(ctx, error):
     """Basic error messages"""
     if isinstance(error, commands.MissingPermissions):
-        msg = "Sorry, you don't have permissions to do that. Ask a course responsible for help!"
+        msg = "Sorry, you don't have permission to do that. Ask a course responsible for help!"
     elif isinstance(error, commands.MissingRequiredArgument):
-        msg = f"You forgot an argument: {error.param}. Please try again!"
+        msg = f"You forgot an argument: `{error.param}`. Please try again!"
     elif isinstance(error, commands.CommandNotFound):
         msg = "I don't know that command. Check out the `>help` for more info on what I can do!"
     else:
-        msg = "Something went wrong with the command! Ask a course responsible for help."
+        msg = "Something went wrong! Ask a course responsible for help."
 
     await ctx.send(msg, delete_after=5)
     await ctx.message.delete(delay=5)
