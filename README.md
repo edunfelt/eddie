@@ -1,6 +1,6 @@
 # Discord bot: Eddie the computer
-A discord bot to help manage programming courses. Eddie is hosted on my Heroku account currently on the free plan. 
-This should be enough to keep him running 24/7, but it might be good to look into other options in the future.
+A discord bot to help manage programming courses. Eddie is currently set up to run using a `.env` file to fetch and use the necessary Discord token from the machine locally. This is also stored as a repository secret for collaborators.
+
 
 Bot prefix is currently set to `!` or by directly using @ to mention him.
 
@@ -31,6 +31,13 @@ The channel is assumed to be called either `#queue` or `#kö`. The workflow then
 4. Eddie deletes both the students original message and the TA's response.
 
 This requires minimal intervention to keep the queue channel clear and easy to navigate for students and TA's.
+
+## Testing and deploying
+For testing locally, request collaborator access to get the token, clone the repo and create the `.env` file in the `eddie` folder. Finally, start the bot by simply running `python3 eddie.py` and he should wake up and be shown as active in all Discord servers.
+
+Eddie can easily be hosted on a Heroku account on the free plan. This seems to be enough to keep him running 24/7, but it might be good to look into other options.
+
+Instructions on how to use the Discord developer portal to invite the bot, and how to get started with the `discord.py` library can be found in [this helpful article](https://realpython.com/how-to-make-a-discord-bot-python/).
 
 ## The name
 Yes, it is a hitchhikers reference. :)
