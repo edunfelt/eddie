@@ -9,11 +9,13 @@ Created: 2022-02-14
 Modified: 2022-02-20
 """
 import os
+import pydoc
 import discord
 from discord.ext import commands
-import pydoc
+from dotenv import load_dotenv
 
 # envs
+load_dotenv()   # load local .env file
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 # intents
