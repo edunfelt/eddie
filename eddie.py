@@ -116,9 +116,10 @@ async def on_reaction_add(reaction, user):
     """Delete messages on checkmark react from TA"""
     # get message and referenced message
     msg = reaction.message
+    channel = msg.channel.name
     ref = await msg.channel.fetch_message(msg.reference.message_id)
     
-    if user.bot or reaction.emoji != "✅" or not bot_perms(user):
+    if user.bot or reaction.emoji != "✅" or channel not in ["queue", "kö"] or not bot_perms(user):
         return
     
     await ref.delete()
