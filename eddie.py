@@ -8,24 +8,18 @@ Author: Emilia Dunfelt (emilia@dunfelt.se)
 Created: 2022-02-14
 Modified: 2022-02-20
 """
-import os
 import pydoc
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
-
-# envs
-load_dotenv()   # load local .env file
-TOKEN = os.getenv("DISCORD_TOKEN")
 
 # intents
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 
 # bot settings
 help_command = commands.DefaultHelpCommand(no_category="Available commands")
 bot = commands.Bot(
-    command_prefix=commands.when_mentioned_or("!"), 
+    command_prefix=commands.when_mentioned_or("!"),
     intents=intents,
     help_command=help_command,
     description="Your friendly shipboard robot, equipped with a GPP (Genuine People Personality) for your convenience."
@@ -54,15 +48,15 @@ async def ping(ctx, help="check if bot is up by ping"):
 async def toggle(ctx, channel="queue", help="toggle queue channel"):
     """Lock/Unlock write-permissions for regular members"""
     server = ctx.guild
-    
+
     #overwrite to apply
     overwrite = discord.PermissionOverwrite()
     overwrite.send_messages = False
-    
+
     # channel and users to change perms for
     queue = discord.utils.get(server.channels, name=channel)
     everyone = server.default_role
-    
+
     # channel not found
     if not queue:
         await ctx.send(f"Sorry, I could not find a channel named `#{channel}` in here. Did you forget to add it?", delete_after=5)
@@ -80,7 +74,7 @@ async def toggle(ctx, channel="queue", help="toggle queue channel"):
         await queue.purge(limit=100, check=bot_msg)
         confirmation = f"I unlocked the channel `#{channel}`!"
         queue_msg = "The queue is now open! Please type your name and wait for a TA to call you to a voice channel."
-    
+
     await ctx.send(confirmation)
     await queue.send(queue_msg)
 
@@ -93,7 +87,7 @@ async def docs(ctx, search, help="fetch docs"):
 # events
 @bot.event
 async def on_ready():
-    """Bot ready message and presence"""   
+    """Bot ready message and presence"""
     await bot.change_presence(activity=discord.Game("the Heart of Gold"))
     print("Eddie is ready!")
 
@@ -108,7 +102,7 @@ async def on_message(msg):
 
     if channel not in ["queue", "kö"] or not bot_perms(msg.author) or not msg.reference:
         return
-        
+
     await msg.add_reaction("✅")
 
 @bot.event
@@ -118,10 +112,10 @@ async def on_reaction_add(reaction, user):
     msg = reaction.message
     channel = msg.channel.name
     ref = await msg.channel.fetch_message(msg.reference.message_id)
-    
+
     if user.bot or reaction.emoji != "✅" or channel not in ["queue", "kö"] or not bot_perms(user):
         return
-    
+
     await ref.delete()
     await msg.delete()
 
@@ -130,9 +124,9 @@ async def on_member_join(member):
     """Sends DM to students joining the server"""
     message = f"""
 Hej {member.name},
-    
+
 Welcome to the Discord server for this course! In the server you can reach \
-our for help from our TAs and teachers, as well as interact with other students. 
+our for help from our TAs and teachers, as well as interact with other students.
 
 The server is meant to be a welcoming and friendly place, so please treat \
 everyone with respect and patience. We also encourage you to change your \
@@ -142,7 +136,7 @@ need help getting started - don't hesitate to ask!
 There might be more specific rules for this course's Discord server, so \
 please read what's posted in the #rules channel before proceeding.
 
-    
+
 Best regards,
 the Teachers and TAs
 """
@@ -165,5 +159,3 @@ async def on_command_error(ctx, error):
     await ctx.message.delete(delay=5)
 
 
-# run client using TOKEN from .env file    
-bot.run(TOKEN)
