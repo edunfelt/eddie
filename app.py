@@ -5,7 +5,6 @@ from threading import Thread
 
 import eddie
 
-
 # envs
 load_dotenv()   # load local .env file
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -18,13 +17,8 @@ app = Flask(__name__)
 def home():
     return "<h3>Flask running</h3>"
 
-# start thread
-def flask_thread(func):
-    thread = Thread(target=func)
-    print("Starting thread...")
-    thread.start()
+# start bot thread
+t = Thread(target=eddie.bot.run(TOKEN))
+t.start()
 
-if __name__ == "__main__":
-    flask_thread(func=app.run)
-    eddie.bot.run(TOKEN)
 
